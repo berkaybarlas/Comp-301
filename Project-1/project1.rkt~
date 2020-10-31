@@ -6,62 +6,40 @@
   ;;; save your file in the format: p1_0011221_asabuncuoglu13_00112222_galtintas17.rkt
   ;;;;;;;;;;;;;;;;;;; PROBLEMS ;;;;;;;;;;;;;;;;;;;;
   ;; PROJECT 1 Part A | Write your answer below here as a comment
-  ;;
-  ;;We are going to represent colors with given parameters R, G, B. We define two data representation such as hexadecimal and RGB color list.
-  ;;
-  ;;The grammar of  data representation hexadecimal as follows:
-  ;;We can define the representation inductively by:
-  ;;; <color>   ::= <color> <color> | <chexdigit>
-  ;;; <chexdigit> ::= () | (cdigit.cidigit.cdigit.cidigit.cdigit.cidigit)
-  ;;; <cdigit>  ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F
-  ;;;
-  ;;;
-  ;;The grammar of  data representation RGB Color list as follows:
-  ;;We can define the representation inductively by:
-  ;;; <color>   ::= <color> <color> | <RGBlist>
-  ;;; <RGBlist> ::= () | (RGBnum.RGBnum.RGBnum)
-  ;;; <RGBnum>  ::= 0 | 1 | 2 | 3 .... | 255
-
-  ;Second representation is ordered box representation:
-  ;;
-  ;;
+  ;
+  ;
+  ;
+  ;
+  ;
+  ;
   ;
   ;; PROJECT 1 Part B
   ;; First Representation | We added a suffix so that both first and second representations can be tested at once.
 
-  (define create-hex-color
-    (lambda (R G B)))
-
-  (define is-zero-hex-color?
-    ())
-  
- ; Successor increments each R, G, B values by 1.
-  (define successor-hex-color
+  (define create-a
     ())
 
- 
+  (define is-zero-a?
+    ())
+
+  (define successor-a
+    ())
 
   ;; Second Representation | We added a -b suffix so that both Unary and BigNum can be tested at once.
-  (define create-RGB-color
-    (lambda (R G B)))
-
-  (define is-zero-RGB-color?
+  (define create-b
     ())
 
-  ; Successor increments each R, G, B values by 1.
-  (define successor-RGB-color
+  (define is-zero-b?
+    ())
+
+  (define successor-b
     ())
 
   ;; PROJECT 1 Part C | Write your answer below here as a comment
-  ;Constructors: Creates an instance of the datatype; the constructor takes as many arguments as the variant’s field-ids, and each argument is checked by applying the function produced by the variant’s predicate-expr.
-  ;create-a, create-b, successor-a, successor-b
   ;
-  ;Observers: Extract information from values of the data type. Has two kinds: predicates and extractors.
-  ;is-zero-a?, is-zero-b?
-  ;Extractors: Extractors report an error if an expressed value is not of the expected kind.
-  ;Predicates: Predicates takes information and returns boolean about the situation.
-  ;is-zero-a?, is-zero-b?
-  
+  ;
+  ;
+  ;
   ;
   
   ;;;;;;;;;;;;;;;;;;; TESTS ;;;;;;;;;;;;;;;;;;;;;;;;
