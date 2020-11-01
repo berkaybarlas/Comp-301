@@ -1,8 +1,9 @@
 (module project1 mzscheme
   ;;;;;;;;;;;; Comp 301 Project 1 ;;;;;;;;;;;;;;;;
   ;;; Add group members below
-  ;;; Alpay Sabuncuoğlu, asabuncuoglu13, 0011221
-  ;;; Gül Sena Altıntaş, galtintas17, 0011222
+  ;;; Baran Berkay Hökelek, bhokelek16, 0060673
+  ;;; Berkay Barlas, bbarlas15,
+  ;;; Utku Noyan, unoyan16
   ;;; save your file in the format: p1_0011221_asabuncuoglu13_00112222_galtintas17.rkt
   ;;;;;;;;;;;;;;;;;;; PROBLEMS ;;;;;;;;;;;;;;;;;;;;
   ;; PROJECT 1 Part A | Write your answer below here as a comment
@@ -30,15 +31,76 @@
   ;; First Representation | We added a suffix so that both first and second representations can be tested at once.
 
   (define create-hex-color
-    (lambda (R G B) 'sad))
+    (lambda (R G B)
+      (append
+       (num2hex R)
+       (num2hex G)
+       (num2hex B)
+       )))
+
+  (define num2hex
+    (lambda (num)
+      (cond
+        ((> num 255) (list 'F 'F))
+        ((< num 0) (list 0 0))
+        (else (append (list (dec2hex (quotient num 16))) (list (dec2hex (remainder num 16)))))
+        )))
+
+  (define dec2hex
+    (lambda (dec)
+      (cond
+        ((= dec 10) 'A)
+        ((= dec 11) 'B)
+        ((= dec 12) 'C)
+        ((= dec 13) 'D)
+        ((= dec 14) 'E)
+        ((= dec 15) 'F)
+        (else dec)
+        )))
 
   (define is-zero-hex-color?
-    ())
+    (lambda (hex-color)
+      (cond
+        ((null? hex-color) #t)
+        ((symbol? (car hex-color)) #f)
+        ((zero? (car hex-color)) (is-zero-hex-color? (cdr hex-color)))
+        (else #f)
+        )))
   
  ; Successor increments each R, G, B values by 1.
   (define successor-hex-color
-    ())
+    (lambda (hex-color)
+      (cond
+        ((is-zero-hex-color? hex-color) (create-hex-color 0 0 1))
+        ((= (length (reverse (plus1 (reverse hex-color)))) 7) (zeros 6))
+        (else (reverse (plus1 (reverse hex-color))))
+       )))
 
+  (define plus1
+    (lambda (lst)
+      (cond
+        ((null? lst) (list 1))
+        ((not (pair? lst)) (p1val lst))
+        ((eq? (car lst) 'F) (append (list 0) (plus1 (cdr lst))))
+        (else (append (list (p1val (car lst))) (cdr lst)))
+        )))
+
+  (define p1val
+    (lambda (lst)
+      (cond ((eq? lst 'F) (list 0 1))  ((eq? lst 'A) 'B)     ((eq? lst 'B) 'C)    ((eq? lst 'C) 'D)    ((eq? lst 'D) 'E)    ((eq? lst 'E) 'F)    (else (+ lst 1)))))
+
+  ;(define reverse
+   ; (lambda (items)
+    ;  (if (null? (cdr items)) (car items) (list (reverse (cdr items)) (car items)))))
+
+
+  ;(define reverse
+   ; (lambda (items)
+    ;  (fold-right (lambda (x r) (append r (list x))) '() items)))
+  
+  (define zeros
+    (lambda (n)
+      (if (= n 0) '() (append (list 0) (zeros (- n 1))))))
  
 
   ;; Second Representation | We added a -b suffix so that both Unary and BigNum can be tested at once.
@@ -137,10 +199,22 @@
   
   ;; PROJECT 1 Part D | Remove the comments and write test cases.
   (display "First Representation Tests\n")
-  ;(equal?? (create-a ) '()) ; should return ?
-  ;(equal?? (is-zero-a? '()) #f) ; should return #f
-  ;(equal?? (is-zero-a? '()) #t) ; should return #t
-  ;(equal?? (successor-a '()) '()) ; should return ?
+  (equal?? (create-hex-color 0 0 0) '(0 0 0 0 0 0)) ; should return '(0 0 0 0 0 0)
+  (equal?? (create-hex-color 99 99 99) '(6 3 6 3 6 3)) ; should return '(6 3 6 3 6 3)
+  (equal?? (create-hex-color 255 200 155) '(F F C 8 9 B)) ; should return '('F 'F 'C 8 9 'B)
+  (equal?? (create-hex-color 265 265 265) '(F F F F F F)) ; should return '('F 'F 'F 'F 'F 'F)
+  (equal?? (create-hex-color -265 265 244) '(0 0 F F F 4)) ; should return '(0 0 'F 'F 'F 'E)
+  (equal?? (is-zero-hex-color? '()) #t) ; should return #t
+  (equal?? (is-zero-hex-color? '(0 0 0 0 0 0)) #t) ; should return #t
+  (equal?? (is-zero-hex-color? '(0 0 0 0)) #t) ; should return #t
+  (equal?? (is-zero-hex-color? '(0 0 1 0 0 0)) #f) ; should return #f
+  (equal?? (is-zero-hex-color? '(1 0 0 0 1 0)) #f) ; should return #f
+  (equal?? (is-zero-hex-color? '(A B C D E F)) #f) ; should return #f
+  (equal?? (successor-hex-color '()) '(0 0 0 0 0 1)) ; should return '(1 1 1)
+  (equal?? (successor-hex-color '(0 0 0 0 0 0)) '(0 0 0 0 0 1)) ; should return '(0 0 0 0 0 1)
+  (equal?? (successor-hex-color '(0 0 1 8 6 4)) '(0 0 1 8 6 5)) ; should return '(0 0 1 8 6 4)
+  (equal?? (successor-hex-color '(E F F F F F)) '(F 0 0 0 0 0)) ; should return '('F 'F 'F 'F 'F 'F)
+  (equal?? (successor-hex-color '(F F F F F F)) '(0 0 0 0 0 0)) ; should return '(0 0 0 0 0 0)
   (newline)
 
   
