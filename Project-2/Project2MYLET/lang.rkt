@@ -14,12 +14,26 @@
      symbol)
     (number (digit (arbno digit)) number)
     (number ("-" digit (arbno digit)) number)
+    (string (#\' (arbno (not #\')) #\') string)
     ))
 
 (define the-grammar
   '((program (expression) a-program)
     
     (expression (number) const-exp)
+
+    ;;;; str-exp ;;;;
+    (expression (string) str-exp)
+
+    ;;;; op-exp ;;;;
+    (expression
+     ("op(" expression "," expression "," number ")")
+     op-exp)
+
+    ;;;; if-exp ;;;;
+    (expression
+     ("if" expression "then" expression (arbno "elif" expression "then" expression) "else" expression)
+     if-exp)
     
     (expression
      ("zero?" "(" expression ")")

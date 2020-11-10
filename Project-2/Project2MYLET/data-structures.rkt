@@ -6,13 +6,15 @@
 
 ;;;;;;;;;;;;;;;; expressed values ;;;;;;;;;;;;;;;;
 
-;;; an expressed value is either a number, a boolean or a procval.
+;;; an expressed value is either a number, a boolean, a string or a procval.
 
 (define-datatype expval expval?
   (num-val
    (value number?))
   (bool-val
-   (boolean boolean?)))
+   (boolean boolean?))
+  (str-val
+   (string string?)))
 
 ;(define-dataype bool-val bool-val?
  ; (bool-val boolean?))
@@ -33,6 +35,12 @@
     (cases expval v
       (bool-val (bool) bool)
       (else (expval-extractor-error 'bool v)))))
+
+(define expval->string
+  (lambda (v)
+    (cases expval v
+      (str-val (string) string)
+      (else (expval-extractor-error 'string v)))))
 
 (define expval-extractor-error
   (lambda (variant value)
