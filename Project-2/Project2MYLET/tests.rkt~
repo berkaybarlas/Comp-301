@@ -47,9 +47,9 @@
  ;; check environment
  (env-i "i" error)
  ;; replace these with the values you defined
- (env-x "x" 2)
- (env-y "y" 3)
- (env-z "z" 7)
+ (env-x "x" 10)
+ (env-y "y" 5)
+ (env-z "z" 1)
  
  ;; simple unbound variables
  (test-unbound-var-1 "foo" error)

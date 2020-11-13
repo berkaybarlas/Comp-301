@@ -1,0 +1,1 @@
+("7.8" racket ("3a3852a96fad6dab938e645e71a60d0ecc14cc37" . "e7ed173915e0f16642a4244c4d98da9a04ce68de") (collects #"eopl" #"lang" #"reader.rkt") (collects #"eopl" #"main.rkt") (collects #"errortrace" #"errortrace-key.rkt"))
