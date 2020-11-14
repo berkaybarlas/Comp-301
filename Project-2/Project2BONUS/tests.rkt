@@ -82,5 +82,13 @@
  ;; check nested let and shadowing
  (simple-nested-let "let x = 3 in let y = 4 in -(x,y)" -1)
  (check-shadowing-in-body "let x = 3 in let x = 4 in x" 4)
- (check-shadowing-in-rhs "let x = 3 in let x = -(x,1) in x" 2) 
+ (check-shadowing-in-rhs "let x = 3 in let x = -(x,1) in x" 2)
+ ; Test case 1 fetch ith
+ ; Test case 2 fetch ith
+ ; Test case 3 character
+ ; Test case 4 character
+ ; Test case 5 concatenate
+ ; Test case 6 concatenate
+ ; Test case 7 substring
+ ; Test case 8 substring
  )
