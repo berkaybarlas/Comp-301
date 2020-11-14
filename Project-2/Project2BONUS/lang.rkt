@@ -14,6 +14,8 @@
      symbol)
     (number (digit (arbno digit)) number)
     (number ("-" digit (arbno digit)) number)
+    ; rope 
+    (rope ())
     ))
 
 (define the-grammar
@@ -23,6 +25,10 @@
     (expression
      ("-" "(" expression "," expression ")")
      diff-exp)
+    
+    (expression
+     ("zero?" "(" expression ")")
+     zero?-exp)
     
     (expression
      ("zero?" "(" expression ")")

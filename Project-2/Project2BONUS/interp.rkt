@@ -40,7 +40,13 @@
                         (num2 (expval->num val2)))
                     (num-val
                      (- num1 num2)))))
-      
+      ;Create Rope (l r left-len len depth)
+      (concat-exp (exp1 exp2)
+                (let ((val1 (value-of exp1 env))
+                      (val2 (value-of exp2 env)))
+                  (let ((rope1 (expval->rope val1))
+                        (rope2 (expval->rope val2)))
+                    (list 'concat () num1 num2))))
       ;;\commentbox{\zerotestspec}
       (zero?-exp (exp1)
                  (let ((val1 (value-of exp1 env)))
