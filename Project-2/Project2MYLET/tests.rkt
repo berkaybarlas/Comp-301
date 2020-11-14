@@ -103,5 +103,8 @@
  ;;; string tests
  (str-test "'this'" "'this'")
  (str-test2 "'test" error)
-; 
- )
+ ;;Custom expression test cases
+ ;;; str-op tests ; 0 concat
+ (str-op-concat-test "str-op('this','this',0) " "'thisthis'")
+ (str-op-concat-test2 "str-op('abc','def',0) " "'abcdef'")
+)

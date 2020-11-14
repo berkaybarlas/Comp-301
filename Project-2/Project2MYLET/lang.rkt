@@ -14,7 +14,7 @@
      symbol)
     (number (digit (arbno digit)) number)
     (number ("-" digit (arbno digit)) number)
-    (string (#\' (arbno (not #\')) #\') string)
+    (string (#\' letter (arbno (not #\') letter) #\') string)
     ))
 
 (define the-grammar
@@ -24,6 +24,11 @@
 
     ;;;; str-exp ;;;;
     (expression (string) str-exp)
+
+    ;;;; str-op ;;;;
+    (expression
+     ("str-op(" expression "," expression "," number ")")
+     str-op)
 
     ;;;; op-exp ;;;;
     (expression

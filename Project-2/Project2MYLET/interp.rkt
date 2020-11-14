@@ -35,6 +35,21 @@
       ;;;; str-exp ;;;;
       (str-exp (str) (str-val str))
 
+      ;;;; str-op ;;;;
+      (str-op (exp1 exp2 type) ;(str-val str)
+              (let ((val1 (value-of exp1 env)) (val2 (value-of exp2 env)))
+                (let ((str1 (expval->string val1)) (str2 (expval->string val2)))
+                  (cond
+                    ; concat operation
+                    (else (str-val
+                           (string-append
+                            (substring str1 0 (- (string-length str1) 1))
+                            (substring str2 1))))
+                    )
+                  )
+                )
+              )
+
       ;;;; op-exp ;;;;
       (op-exp (exp1 exp2 num)
               (let ((val1 (value-of exp1 env)) (val2 (value-of exp2 env)))
