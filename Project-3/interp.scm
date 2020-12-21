@@ -22,7 +22,7 @@
 
   ;; value-of-program : Program -> ExpVal
   ;; Page: 110
-  (define value-of-program 
+ (define value-of-program 
     (lambda (pgm)
       (initialize-store!)               ; new for explicit refs.
       (cases program pgm
@@ -70,10 +70,6 @@
           (let ((val1 (value-of exp1 env)))
             (value-of body
               (extend-env var val1 env))))
-
-        (mlet-exp (vars exps body)
-                  (let ((vals (map (lambda (x) (value-of x env)) exps)))
-                    (value-of body (extend-env* vars vals env))))
         
         (proc-exp (var body)
           (proc-val (procedure var body env)))
@@ -114,7 +110,7 @@
                 (num-val 23)))))
 
 
-        (newarray-exp (exp1 exp2)
+       (newarray-exp (exp1 exp2)
                       (let ((val1 (value-of exp1 env)) (val2 (value-of exp2 env)))
                         (let ((length (expval->num val1)))
                           (letrec
@@ -137,8 +133,99 @@
                          (let ((index (expval->num val2)))
                            (deref (list-ref (expval->list val1) index)))))
 
+
+       (newstack-exp ()
+                     ; returns an empty stack
+                     (newarray-exp 1000 -1) ; According to assumption I defined length
+                     ;maximum possible and give each value -1 to understand where top is future functions
+                      )
+
+        (stack-push-exp (exp1 exp2)
+                      ; adds the element val to the stack stk
+                        (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                      (let ((val1 (value-of exp1 env))
+                             (val2 (value-of exp2 env))
+                             (top-idx (find-top exp1 0)))
+                         (updatearray-exp (exp1 top-idx exp2)))
+                      )
+
+      
+        (stack-pop-exp (exp1)
+                      ; removes the topmost element of the stack stk and returns its value.
+                       (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                       (let ((stck (value-of exp1 env))
+                              (top-idx (find-top exp1 0)))
+                              (begin (updatearray-exp (exp1 top-idx -1))
+                                     (num-val (readarray-exp exp1 top-idx))))
+                       )
+      
+        (stack-size-exp (exp1)
+                      ; returns the number of elements in the stack stk.
+                        (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                        (num-val (find-top exp1 0))
+                        )
         
+        (stack-top-exp (exp1)
+                      ; returns the value of the topmost element in the stack stk without removal.
+                       (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                       (let ((val1 (value-of exp1 env))
+                             (top-idx (find-top exp1 0)))
+                       (num-val (readarray-exp exp1 top-idx)))
+                      )
+        
+        (empty-stack?-exp (exp1)
+                      ; returns true if there is no element inside the stack stk and false otherwise.
+                          (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                          (let ((val1 (value-of exp1 env))
+                             (top-idx (find-top exp1 0)))
+                            (if (zero? top-idx)
+                                (bool-val #t)
+                                (bool-val #f)))
+                      )
+        
+        (print-stack-exp (exp1)
+                      ; prints the elements in the stack stk.
+                         (define find-top
+                          (lambda (arr count)
+                          (if (eq? (readarray-exp arr count) -1)
+                              0
+                              (+ 1 (find-top (arr (+ count 1))))))
+                          )
+                         (let ((stck (value-of exp1 env))
+                             (top-idx (find-top exp1 0)))
+                           (if (zero? top-idx) '()
+                               (display stck)))
+                      )
+        
+
         )))
+
+
 
   ;; apply-procedure : Proc * ExpVal -> ExpVal
   ;; 
@@ -180,7 +267,8 @@
         l)))
  
   )
-  
+
+
 
 
   

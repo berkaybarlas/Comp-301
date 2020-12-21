@@ -22,7 +22,9 @@
     (arr-val
      (arr (list-of reference?)))
     )
+  
 
+  
 ;;; extractors:
 
   (define expval->num
@@ -112,6 +114,10 @@
 	    (procedure (var body saved-env)
 	      (list 'procedure var '... (env->list saved-env)))))
 	(else val))))
+
+  
+        
+  
 
 
 )

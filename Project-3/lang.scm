@@ -23,7 +23,7 @@
 
       (expression (number) const-exp)
       (expression
-        ("-" "(" expression ", " expression ")")
+        ("-" "(" expression "," expression ")")
         diff-exp)
       
       (expression
@@ -37,14 +37,8 @@
       (expression (identifier) var-exp)
 
       (expression
-       ("let" identifier " = " expression " in " expression)
-       let-exp)
-
-      (expression
-       ("mlet"
-        (arbno identifier " = " expression)
-        " in " expression)
-       mlet-exp)   
+       ("let" identifier "=" expression "in" expression)
+       let-exp)   
 
       (expression
        ("proc" "(" identifier ")" expression)
@@ -56,8 +50,8 @@
 
       (expression
         ("letrec"
-          (arbno identifier "(" identifier ")" " = " expression)
-           " in " expression)
+          (arbno identifier "(" identifier ")" "=" expression)
+           "in" expression)
         letrec-exp)
       
       ;; new for explicit-refs
@@ -75,7 +69,7 @@
         deref-exp)
 
       (expression
-        ("setref" "(" expression ", " expression ")")
+        ("setref" "(" expression "," expression ")")
         setref-exp)
 
       ;; new for project 3
@@ -94,7 +88,35 @@
        ("read-array(" expression ", " expression ")")
        readarray-exp)
 
+      ;; stack
 
+      (expression
+       ("newstack(" ")")
+       newstack-exp)
+
+      (expression
+       ("stack-push(" expression ", " expression ")")
+       stack-push-exp)
+
+      (expression
+       ("stack-pop(" expression ")")
+       stack-pop-exp)
+      
+      (expression
+       ("stack-size(" expression ")")
+       stack-size-exp)
+      
+      (expression
+       ("stack-top(" expression ")")
+       stack-top-exp)
+
+      (expression
+       ("empty-stack?(" expression ")")
+       empty-stack?-exp)
+
+       (expression
+       ("print-stack(" expression ")")
+       print-stack-exp)
 
       ))
 
@@ -110,5 +132,5 @@
   
   (define just-scan
     (sllgen:make-string-scanner the-lexical-spec the-grammar))
-  
   )
+  
