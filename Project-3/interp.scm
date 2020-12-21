@@ -144,7 +144,7 @@
                       ; adds the element val to the stack stk
                         (define find-top
                           (lambda (arr count)
-                          (if (eq? (readarray-exp arr count) -1)
+                          (if (eq? (readarray-exp arr (num-val count)) -1)
                               0
                               (+ 1 (find-top (arr (+ count 1))))))
                           )
@@ -156,17 +156,19 @@
 
       
         (stack-pop-exp (exp1)
-                      ; removes the topmost element of the stack stk and returns its value.
+                       ; removes the topmost element of the stack stk and returns its value.
                        (define find-top
-                          (lambda (arr count)
-                          (if (eq? (readarray-exp arr count) -1)
-                              0
-                              (+ 1 (find-top (arr (+ count 1))))))
-                          )
+                         (lambda (arr count)
+                           (if (eq? (readarray-exp arr count) -1)
+                               0
+                               (+ 1 (find-top (arr (+ count 1))))))
+                         )
                        (let ((stck (value-of exp1 env))
-                              (top-idx (find-top exp1 0)))
-                              (begin (updatearray-exp (exp1 top-idx -1))
-                                     (num-val (readarray-exp exp1 top-idx))))
+                             (top-idx (find-top exp1 0)))
+                         (let ((pop-val (readarray-exp exp1 top-idx)))
+                           (begin (updatearray-exp (exp1 top-idx -1))
+                                  (num-val pop-val)
+                                  )))
                        )
       
         (stack-size-exp (exp1)
@@ -190,7 +192,7 @@
                           )
                        (let ((val1 (value-of exp1 env))
                              (top-idx (find-top exp1 0)))
-                       (num-val (readarray-exp exp1 top-idx)))
+                       (expval->ref (readarray-exp exp1 top-idx)))
                       )
         
         (empty-stack?-exp (exp1)
