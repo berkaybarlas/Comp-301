@@ -57,12 +57,6 @@
 	(arr-val (arr) arr)
 	(else (expval-extractor-error 'arr v)))))
 
-  (define expval->arr
-    (lambda (v)
-      (cases expval v
-	(arr-val (arr) arr)
-	(else (expval-extractor-error 'reference v)))))
-
   (define expval-extractor-error
     (lambda (variant value)
       (eopl:error 'expval-extractors "Looking for a ~s, found ~s"
