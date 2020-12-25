@@ -206,6 +206,78 @@
                                   (display-single-character stack (expval->num top))
                                   (display ")")
                                   (num-val 23)))))))
+        (newqueque-exp ()
+                    ; returns an empty queue
+                    ;(create-queue 1000 -1) ; According to assumption of length
+                    ; maximum possible and give each value -1 to understand where top is future functions
+                       (letrec ((populate-arr
+                                (lambda (len val)
+                                  (if (zero? len) '() (cons (newref val) (populate-arr (- len 1) val))))))
+                         (let ((queue-array (populate-arr 1001 (num-val -1))))
+                           (begin
+                             (setref! (list-ref queue-array 0) (num-val 0))
+                             (arr-val queue-array)))))      
+                   
+        (queue-push-exp (exp1, exp2)
+                        ;
+                        (let ((queue-val (value-of exp1 env)) (el-val (value-of exp2 env)))
+                          (let ((queue (expval->list queue-val)))
+                            (let ((len (deref (list-ref queue 0))) (start-index (deref (list-ref queue 1))))
+                              (begin
+                                (setref! (list-ref queue (+ (expval->num len) (expval->num start-index))) el-val)
+                                (setref! (list-ref queue 0) (num-val (+ (expval->num len) 1))))))))
+                        
+        (queue-pop-exp (exp1)
+                       ; removes the first element of the queue stk and returns its value.
+                       (let ((queue-val (value-of exp1 env)))
+                          (let ((queue (expval->list stack-val)))
+                            (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
+                              (let ((first-el (deref (list-ref queue (- (+ len start-index) 1)))))
+                              (begin
+                                (setref! (list-ref queue start-index) (num-val -1))
+                                (setref! (list-ref queue 0) (num-val (- len 1)))
+                                (setref! (list-ref queue 1) (num-val (+ start-index 1)))
+                                first-el))))))
+      
+        (queue-size-exp (exp1)
+                        ; returns the number of elements in the queue stk.
+                        (let ((queue-val (value-of exp1 env)))
+                          (let ((queue (expval->list stack-val)))
+                            (let ((len (deref (list-ref queue 0))))
+                              (num-val (expval->num len))))))
+        (queue-top-exp (exp1)
+                       ;
+                       (let ((queue-val (value-of exp1 env)))
+                          (let ((queue (expval->list stack-val)))
+                            (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
+                              (deref (list-ref queue (- (+ len start-index) 1)))))))
+    
+   
+        (empty-queue-exp (exp1)
+                        ; returns the number of elements in the queue stk.
+                        (let ((queue-val (value-of exp1 env)))
+                          (let ((queue (expval->list stack-val)))
+                            (let ((len (deref (list-ref queue 0))))
+                              (bool-val (eq? (expval->num len)))))))
+      
+        (print-queue-exp (exp1)
+                      ; prints the elements in the queue stk.
+                         (let ((queue-val (value-of exp1 env)))
+                          (let ((queue (expval->list queue-val)))
+                            (let ((top (deref (list-ref queue 0))))
+                              (letrec ((display-single-character
+                                        (lambda (stk ind)
+                                          (if (= ind 1)
+                                              (display (expval->num (deref (list-ref stk ind))))
+                                              (begin
+                                                (display (expval->num (deref (list-ref stk ind))))
+                                                (display ", ")
+                                                (display-single-character stk (- ind 1)))))))
+                                (begin
+                                  (display "(")
+                                  (display-single-character queue (expval->num top))
+                                  (display ")")
+                                  (num-val 23)))))))
         
 
         )))
