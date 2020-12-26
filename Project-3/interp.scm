@@ -206,6 +206,7 @@
                                   (display-single-character stack (expval->num top))
                                   (display ")")
                                   (num-val 23)))))))
+        
         (newqueue-exp ()
                     ; returns an empty queue
                     ;(create-queue 1000 -1) ; According to assumption of length
@@ -216,7 +217,8 @@
                          (let ((queue-array (populate-arr 1001 (num-val -1))))
                            (begin
                              (setref! (list-ref queue-array 0) (num-val 0))
-                             (arr-val queue-array)))))      
+                             (setref! (list-ref queue-array 1) (num-val 2))
+                             (arr-val queue-array)))))   
                    
         (queue-push-exp (exp1 exp2)
                         ;
@@ -258,7 +260,7 @@
                         (let ((queue-val (value-of exp1 env)))
                           (let ((queue (expval->list queue-val)))
                             (let ((len (deref (list-ref queue 0))))
-                              (bool-val (eq? (expval->num len)))))))
+                              (bool-val (eq? (expval->num len) 0))))))
       
         (print-queue-exp (exp1)
                       ; prints the elements in the queue stk.
@@ -278,6 +280,7 @@
                                   (display-single-character queue (expval->num top))
                                   (display ")")
                                   (num-val 23)))))))
+        
         
 
         )))

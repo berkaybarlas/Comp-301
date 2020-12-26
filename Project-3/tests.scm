@@ -196,9 +196,9 @@ in begin
 ;
 ;            ; ==================== Queue test cases =========================;
 ;
-      (queue-test1 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x,30); queue-size(x) end" 3)
+      (queue-test1 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x, 30); queue-size(x) end" 3)
       (queue-test2 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-pop(x); queue-top(x) end" 30)
-      (queue-test3 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x,30); queue-pop(x); queue-pop(x); queue-pop(x); empty-queue?(x) end" #t)
+      (queue-test3 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-pop(x); queue-pop(x); empty-queue?(x) end" #t)
       (queue-test4 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-top(x) end" 30)
       (queue-test5 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-top(x); queue-push(x, 30); queue-size(x) end" 2)
 ;      
