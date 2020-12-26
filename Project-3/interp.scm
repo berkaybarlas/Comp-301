@@ -206,7 +206,7 @@
                                   (display-single-character stack (expval->num top))
                                   (display ")")
                                   (num-val 23)))))))
-        (newqueque-exp ()
+        (newqueue-exp ()
                     ; returns an empty queue
                     ;(create-queue 1000 -1) ; According to assumption of length
                     ; maximum possible and give each value -1 to understand where top is future functions
@@ -218,7 +218,7 @@
                              (setref! (list-ref queue-array 0) (num-val 0))
                              (arr-val queue-array)))))      
                    
-        (queue-push-exp (exp1, exp2)
+        (queue-push-exp (exp1 exp2)
                         ;
                         (let ((queue-val (value-of exp1 env)) (el-val (value-of exp2 env)))
                           (let ((queue (expval->list queue-val)))
@@ -230,7 +230,7 @@
         (queue-pop-exp (exp1)
                        ; removes the first element of the queue stk and returns its value.
                        (let ((queue-val (value-of exp1 env)))
-                          (let ((queue (expval->list stack-val)))
+                          (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
                               (let ((first-el (deref (list-ref queue (- (+ len start-index) 1)))))
                               (begin
@@ -242,21 +242,21 @@
         (queue-size-exp (exp1)
                         ; returns the number of elements in the queue stk.
                         (let ((queue-val (value-of exp1 env)))
-                          (let ((queue (expval->list stack-val)))
+                          (let ((queue (expval->list queue-val)))
                             (let ((len (deref (list-ref queue 0))))
                               (num-val (expval->num len))))))
         (queue-top-exp (exp1)
                        ;
                        (let ((queue-val (value-of exp1 env)))
-                          (let ((queue (expval->list stack-val)))
+                          (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
                               (deref (list-ref queue (- (+ len start-index) 1)))))))
     
    
-        (empty-queue-exp (exp1)
+        (empty-queue?-exp (exp1)
                         ; returns the number of elements in the queue stk.
                         (let ((queue-val (value-of exp1 env)))
-                          (let ((queue (expval->list stack-val)))
+                          (let ((queue (expval->list queue-val)))
                             (let ((len (deref (list-ref queue 0))))
                               (bool-val (eq? (expval->num len)))))))
       
