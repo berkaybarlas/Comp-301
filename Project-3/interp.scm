@@ -113,11 +113,7 @@
        (newarray-exp (exp1 exp2)
                       (let ((val1 (value-of exp1 env)) (val2 (value-of exp2 env)))
                         (let ((length (expval->num val1)))
-                          (letrec
-                              ((populate-arr
-                                (lambda (len val)
-                                  (if (zero? len) '() (cons (newref val) (populate-arr (- len 1) val))))))
-                            (arr-val (populate-arr length val2))))))
+                            (arr-val (array length val2)))))
 
         (updatearray-exp (exp1 exp2 exp3)
                          (let ((val1 (value-of exp1 env))
@@ -138,13 +134,10 @@
                      ; returns an empty stack
                      ;(create-stack 1000 -1) ; According to assumption I defined length
                      ;maximum possible and give each value -1 to understand where top is future functions
-                     (letrec ((populate-arr
-                                (lambda (len val)
-                                  (if (zero? len) '() (cons (newref val) (populate-arr (- len 1) val))))))
-                       (let ((proto-stack (populate-arr 1001 (num-val -1))))
+                       (let ((proto-stack (array 1001 (num-val -1))))
                          (begin
                            (setref! (list-ref proto-stack 0) (num-val 0))
-                           (arr-val proto-stack)))))
+                           (arr-val proto-stack))))
 
         (stack-push-exp (exp1 exp2)
                       ; adds the element val to the stack stk
@@ -215,7 +208,7 @@
                     ; returns an empty queue
                     ;(create-queue 1000 -1) ; According to assumption of length
                     ; maximum possible and give each value -1 to understand where top is future functions
-                         (let ((queue-array (array 1002 -1)))
+                         (let ((queue-array (array 1002 (num-val -1))))
                            (begin
                              (setref! (list-ref queue-array 0) (num-val 0))
                              (setref! (list-ref queue-array 1) (num-val 2))
@@ -225,10 +218,18 @@
                         ;
                         (let ((queue-val (value-of exp1 env)) (el-val (value-of exp2 env)))
                           (let ((queue (expval->list queue-val)))
-                            (let ((len (deref (list-ref queue 0))) (start-index (deref (list-ref queue 1))))
+                            (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num (deref (list-ref queue 1)))))
+                              (let ((ind
+                                     (if (>= (+ len start-index) 1002)
+                                         (+ (- (+ len start-index) 1002) 2)
+                                         (+ len start-index)
+                                         )
+                                     ))
                               (begin
-                                (setref! (list-ref queue (+ (expval->num len) (expval->num start-index))) el-val)
-                                (setref! (list-ref queue 0) (num-val (+ (expval->num len) 1))))))))
+                                (setref! (list-ref queue ind) el-val) el-val)
+                                (setref! (list-ref queue 0) (num-val (+ len 1)))
+                               )
+                              ))))
                         
         (queue-pop-exp (exp1)
                        ; removes the first element of the queue stk and returns its value.
@@ -279,7 +280,7 @@
                               (letrec ((display-single-character
                                         (lambda (queue iter)
                                           (let ((ind
-                                                 (if (> (+ iter start-index) 1002)
+                                                 (if (>= (+ iter start-index) 1002)
                                                      (+ (- (+ iter start-index) 1002) 2)
                                                      (+ iter start-index)
                                                      )
