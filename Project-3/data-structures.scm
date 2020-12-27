@@ -23,7 +23,16 @@
      (arr (list-of reference?)))
     )
   
-
+;;; constructor
+   (define array
+    (lambda (len val)
+      (letrec ((populate-arr
+                (lambda (len val)
+                  (if (zero? len) '() (cons (newref val) (populate-arr (- len 1) val))))))
+        (populate-arr len val)
+        )
+      )
+    )
   
 ;;; extractors:
 

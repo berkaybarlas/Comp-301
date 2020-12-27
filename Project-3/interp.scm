@@ -162,10 +162,14 @@
                           (let ((stack (expval->list stack-val)))
                             (let ((top (deref (list-ref stack 0))))
                               (let ((top-el (deref (list-ref stack (expval->num top)))))
-                              (begin
-                                (setref! (list-ref stack (expval->num top)) (num-val -1))
-                                (setref! (list-ref stack 0) (num-val (- (expval->num top) 1)))
-                                top-el))))))
+                                (if (eq? (expval->num top) 0)
+                                    (num-val -1)
+                                    (begin
+                                      (setref! (list-ref stack (expval->num top)) (num-val -1))
+                                      (setref! (list-ref stack 0) (num-val (- (expval->num top) 1)))
+                                      top-el)
+                                    )
+                                )))))
       
         (stack-size-exp (exp1)
                       ; returns the number of elements in the stack stk.
@@ -211,14 +215,11 @@
                     ; returns an empty queue
                     ;(create-queue 1000 -1) ; According to assumption of length
                     ; maximum possible and give each value -1 to understand where top is future functions
-                       (letrec ((populate-arr
-                                (lambda (len val)
-                                  (if (zero? len) '() (cons (newref val) (populate-arr (- len 1) val))))))
-                         (let ((queue-array (populate-arr 1001 (num-val -1))))
+                         (let ((queue-array (array 1002 -1)))
                            (begin
                              (setref! (list-ref queue-array 0) (num-val 0))
                              (setref! (list-ref queue-array 1) (num-val 2))
-                             (arr-val queue-array)))))   
+                             (arr-val queue-array))))
                    
         (queue-push-exp (exp1 exp2)
                         ;
@@ -235,11 +236,15 @@
                           (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
                               (let ((first-el (deref (list-ref queue (- (+ len start-index) 1)))))
-                              (begin
-                                (setref! (list-ref queue start-index) (num-val -1))
-                                (setref! (list-ref queue 0) (num-val (- len 1)))
-                                (setref! (list-ref queue 1) (num-val (+ start-index 1)))
-                                first-el))))))
+                                (if (eq? len 0)
+                                    (num-val -1)
+                                    (begin
+                                      (setref! (list-ref queue start-index) (num-val -1))
+                                      (setref! (list-ref queue 0) (num-val (- len 1)))
+                                      (setref! (list-ref queue 1) (num-val (+ start-index 1)))
+                                      first-el)
+                                    )
+                                )))))
       
         (queue-size-exp (exp1)
                         ; returns the number of elements in the queue stk.
@@ -252,7 +257,9 @@
                        (let ((queue-val (value-of exp1 env)))
                           (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
-                              (deref (list-ref queue (- (+ len start-index) 1)))))))
+                              (if (eq? len 0)
+                                  (num-val -1)
+                                  (deref (list-ref queue (- (+ len start-index) 1))))))))
     
    
         (empty-queue?-exp (exp1)
@@ -264,20 +271,28 @@
       
         (print-queue-exp (exp1)
                       ; prints the elements in the queue stk.
+                      ; starts from start-index and iterates len times
+                      ; when start-index+len+current-iter > len take mode len and add 2.
                          (let ((queue-val (value-of exp1 env)))
                           (let ((queue (expval->list queue-val)))
-                            (let ((top (deref (list-ref queue 0))))
+                            (let ((len (expval->num(deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
                               (letrec ((display-single-character
-                                        (lambda (stk ind)
-                                          (if (= ind 1)
-                                              (display (expval->num (deref (list-ref stk ind))))
+                                        (lambda (queue iter)
+                                          (let ((ind
+                                                 (if (> (+ iter start-index) 1002)
+                                                     (+ (- (+ iter start-index) 1002) 2)
+                                                     (+ iter start-index)
+                                                     )
+                                                 ))
+                                          (if (= iter (- len 1))
+                                              (display (expval->num (deref (list-ref queue ind))))
                                               (begin
-                                                (display (expval->num (deref (list-ref stk ind))))
+                                                (display (expval->num (deref (list-ref queue ind))))
                                                 (display ", ")
-                                                (display-single-character stk (- ind 1)))))))
+                                                (display-single-character queue (+ iter 1))))))))
                                 (begin
                                   (display "(")
-                                  (display-single-character queue (expval->num top))
+                                  (display-single-character queue 0)
                                   (display ")")
                                   (num-val 23)))))))
         

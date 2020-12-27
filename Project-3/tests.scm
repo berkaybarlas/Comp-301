@@ -201,6 +201,13 @@ in begin
       (queue-test3 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-pop(x); queue-pop(x); empty-queue?(x) end" #t)
       (queue-test4 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-top(x) end" 30)
       (queue-test5 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 20); queue-push(x, 30); queue-pop(x); queue-top(x); queue-push(x, 30); queue-size(x) end" 2)
+; Additional tests
+      (queue-test-empty "let x = newqueue() in begin queue-pop(x) end" -1)
+      (stack-test-empty "let x = newstack() in begin stack-pop(x) end" -1)
+      (queue-test-print1 "let x = newqueue() in begin queue-push(x, 10); queue-push(x, 11); print-queue(x) end" -1)
+      (queue-test-print2 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 11); print-queue(x) end" -1)
+      (queue-test-print2 "let x = newqueue() in begin queue-push(x, 10); queue-pop(x); queue-push(x, 11); queue-push(x, 12); queue-push(x, 13); print-queue(x) end" -1)
+      (stack-test-print "let x = newstack() in begin stack-push(x, 10); print-stack(x) end" -1)
 ;      
       ))
   )
