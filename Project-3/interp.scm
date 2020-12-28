@@ -215,7 +215,9 @@
                              (arr-val queue-array))))
                    
         (queue-push-exp (exp1 exp2)
-                        ;
+                        ; adds the element el-val to the queue
+                        ; puts the element in to index len+start index
+                        ; if len + start-index => 1002 then it decrements 1000 and puts to that index at array
                         (let ((queue-val (value-of exp1 env)) (el-val (value-of exp2 env)))
                           (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num (deref (list-ref queue 1)))))
@@ -232,7 +234,7 @@
                               ))))
                         
         (queue-pop-exp (exp1)
-                       ; removes the first element of the queue stk and returns its value.
+                       ; removes the first element of the queue and returns its value.
                        (let ((queue-val (value-of exp1 env)))
                           (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
@@ -254,7 +256,8 @@
                             (let ((len (deref (list-ref queue 0))))
                               (num-val (expval->num len))))))
         (queue-top-exp (exp1)
-                       ;
+                       ; returns num-val -1 if queue is empty
+                       ; else returns the first element in queue
                        (let ((queue-val (value-of exp1 env)))
                           (let ((queue (expval->list queue-val)))
                             (let ((len (expval->num (deref (list-ref queue 0)))) (start-index (expval->num(deref (list-ref queue 1)))))
