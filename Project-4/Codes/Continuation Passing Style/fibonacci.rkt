@@ -2,6 +2,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;; TASK 4 ;;;;;;;;;;;;;;;;;;;;;;;;
 
+(define fibo-cont
+  (lambda (n c)
+    (if (<= n 2)
+        (c 1)
+        (+
+         (fibo-cont (- n 1) (lambda (num) num))
+         (fibo-cont (- n 2) (lambda (num) num))
+         )
+        )))
+
+(define fibonacci
+  (lambda (n)
+    (fibo-cont n (lambda (x) x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
