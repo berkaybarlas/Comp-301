@@ -17,9 +17,11 @@
       (proc proc?))
     ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;
     ; implement an emptylist value expval
-
+    (emptylist-val
+     (empty empty?))
     ; implement a pair value expval
-    
+    (pair-val
+     (pair pair?))
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     )
 
@@ -50,11 +52,23 @@
 
   ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;
   ;; implement expval->car
-
+  (define expval->car
+    (lambda (v)
+      (cases expval v
+	(pair-val (car cdr) car)
+	(else (expval-extractor-error 'car v)))))
   ;; implement expval->cdr
-  
+  (define expval->cdr
+    (lambda (v)
+      (cases expval v
+	(pair-val (cdr cdr) cdr)
+	(else (expval-extractor-error 'cdr v)))))
   ;; implement expval->null?
-  
+  (define expval->null?
+    (lambda (v)
+      (cases expval v
+	(emptylist-val (bool) bool)
+	(else (expval-extractor-error 'null? v)))))
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
 ;;;;;;;;;;;;;;;; continuations ;;;;;;;;;;;;;;;;
