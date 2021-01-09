@@ -75,7 +75,7 @@
       ; implement list(exp1, exp2, ..., expN)
       ; hint: use seperate-list function of scheme.
       (expression
-       ("list" (separated-list expression ","))
+       ("list" "(" (separated-list expression ",") ")")
        list-exp)
       
       ; implement map(expression, expression)

@@ -18,7 +18,7 @@
     ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;
     ; implement an emptylist value expval
     (emptylist-val
-     (empty empty?))
+     (empty null?))
     ; implement a pair value expval
     (pair-val
      (pair pair?))
@@ -55,13 +55,15 @@
   (define expval->car
     (lambda (v)
       (cases expval v
-	(pair-val (car cdr) car)
+	;(pair-val (car cdr) car)
+        (pair-val (car) car)
 	(else (expval-extractor-error 'car v)))))
   ;; implement expval->cdr
   (define expval->cdr
     (lambda (v)
       (cases expval v
-	(pair-val (cdr cdr) cdr)
+	;(pair-val (cdr cdr) cdr)
+        (pair-val (cdr) cdr)
 	(else (expval-extractor-error 'cdr v)))))
   ;; implement expval->null?
   (define expval->null?
@@ -106,15 +108,26 @@
       (saved-cont continuation?))
     ;;;;;;;;;;;;; TASK 4: LIST ;;;;;;;;;;;;;;;;;;
     ; implement continuation datatype for car expression
-
+    (car-cont
+      (saved-env environment?)
+      (saved-cont continuation?))
     ; implement continuation datatype for cdr expression
-
+    (cdr-cont
+      (saved-env environment?)
+      (saved-cont continuation?))
     ; implement continuation datatype for null? expression
-
+    (null?-cont
+      (saved-cont continuation?))
     ; implement continuation datatype for your list expression
-
+    (list-cont
+      (cdr expression?)
+      (saved-env environment?)
+      (saved-cont continuation?))
     ; implement continuation datatype(s) for your map expression
-    
+    (map-cont
+      (cdr expression?)
+      (saved-env environment?)
+      (saved-cont continuation?))    
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     )

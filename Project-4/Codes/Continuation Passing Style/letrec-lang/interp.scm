@@ -53,17 +53,28 @@
 
         ;;;; TASK 4 ;;;;;;;;;
         ; Implement car expression case here
-        
+        (car-exp (exp1) 
+          (value-of/k exp1 env
+            (car-cont cont)))
         ; Implement cdr expression case here
-
+        (cdr-exp (exp1) 
+          (value-of/k exp1 env
+            (car-cont env cont)))
         ; Implement null? expression case here
-
+        (null?-exp (exp1)
+          (value-of/k exp1 env
+            (zero1-cont cont)))
         ; Implement emptylist expression case here
-
+        (emptylist-exp ()
+          (emptylist-val))
         ; Implement your list expression case here
-        
+        (list-exp (exp1)
+          (value-of/k exp1 env
+            (zero1-cont cont)))        
         ; Implement the map expression case here        
-        
+        (map-exp (exp1 exp2)
+          (value-of/k exp1 env
+            (zero1-cont cont)))   
         ;;;;;;;;;;;;;;;;;;;;;;
    )))
 
@@ -105,16 +116,37 @@
 
         ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;;
         ; implement "car-cont" continuation here
+        (car-cont (saved-env saved-cont)
+          (apply-cont saved-cont
+            (pair-val
+              (car (expval->car val)))))
 
         ; implement "cdr-cont" continuation here
-
+        (cdr-cont (saved-env saved-cont)
+          (let ((list1 (expval->proc val)))
+            (apply-cont saved-cont (pair-val (cdr list1) ))))
         ; implement "null?-cont" continuation here
+        (null?-cont (saved-cont)
+          (apply-cont saved-cont
+            (bool-val
+              (expval->null? val))))
 
         ; implement continuation for list-exp here.
         ; hint: you will need to call value-of/k recursively, by passing this continuation as cont to value-of/k.
+        (list-cont (cdr saved-env saved-cont)
+                   (if (null? cdr)
+                       (apply-cont saved-cont (cons val (emptylist-val)))
+                       (cons val (value-of/k (car cdr) saved-env
+                                   (list-cont (cdr cdr) saved-env (cons))))
+                       ))
 
         ; implement map-exp continuation(s) here. you will notice that one continuation will not be enough.
-        
+        (map-cont (cdr saved-env saved-cont)
+                   (if (null? cdr)
+                       (apply-cont saved-cont (cons val (emptylist-val)))
+                       (cons val (value-of/k (car cdr) saved-env
+                                   (list-cont (cdr cdr) saved-env (cons))))
+                       ))        
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
         )))

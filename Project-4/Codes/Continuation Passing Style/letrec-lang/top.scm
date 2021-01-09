@@ -57,6 +57,7 @@
                 (run (cadr test))))
           (else (eopl:error 'run-one "no such test: ~s" test-name))))))
  
-  (run-all) ; runs all tests
+  ;(run-all) ; runs all tests
+  (run "list(1, 2, 3)")
   
   )
