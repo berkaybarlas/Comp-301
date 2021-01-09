@@ -58,6 +58,14 @@
           (else (eopl:error 'run-one "no such test: ~s" test-name))))))
  
   ;(run-all) ; runs all tests
-  (run "list(1, 2, 3)")
+  (run "null?(emptylist)")
+  (run "null?(list())")
+  ;(run "null?(list(1))")
+  (run "list(1,2,3)")
+  ;(run "car(list(1,2,3))")
+  ;(run "cdr(list(1,2,3))")
+  
+  ;(run "cdr(cdr(list(1,2,3)))")
+  ;(run "car(cdr(list(1,2,3)))")
   
   )

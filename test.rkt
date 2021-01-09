@@ -4,7 +4,7 @@
 
 (define fibo-cont
   (lambda (n c)
-    (if ( n 2)
+    (if (<= n 2)
         (c 1)
         (+
          (fibo-cont (- n 1) (lambda (num) num))

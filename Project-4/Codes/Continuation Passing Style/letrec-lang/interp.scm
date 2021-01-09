@@ -59,18 +59,21 @@
         ; Implement cdr expression case here
         (cdr-exp (exp1) 
           (value-of/k exp1 env
-            (car-cont env cont)))
+            (cdr-cont cont)))
         ; Implement null? expression case here
         (null?-exp (exp1)
           (value-of/k exp1 env
-            (zero1-cont cont)))
+            (null?-cont cont)))
         ; Implement emptylist expression case here
         (emptylist-exp ()
-          (emptylist-val))
+          (apply-cont cont (emptylist-val)))
         ; Implement your list expression case here
         (list-exp (exp1)
-          (value-of/k exp1 env
-            (zero1-cont cont)))        
+                  (if (null? exp1)
+                      (apply-cont cont (emptylist-val))
+                      (value-of/k (car exp1) env
+                                  (list-cont (cdr exp1) env cont))
+                      ))
         ; Implement the map expression case here        
         (map-exp (exp1 exp2)
           (value-of/k exp1 env
@@ -116,15 +119,14 @@
 
         ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;;
         ; implement "car-cont" continuation here
-        (car-cont (saved-env saved-cont)
+        (car-cont (saved-cont)
           (apply-cont saved-cont
-            (pair-val
-              (car (expval->car val)))))
+              (apply-cont saved-cont (expval->car val))))
 
         ; implement "cdr-cont" continuation here
-        (cdr-cont (saved-env saved-cont)
-          (let ((list1 (expval->proc val)))
-            (apply-cont saved-cont (pair-val (cdr list1) ))))
+        (cdr-cont (saved-cont)
+          (apply-cont saved-cont
+              (apply-cont saved-cont (expval->cdr val))))
         ; implement "null?-cont" continuation here
         (null?-cont (saved-cont)
           (apply-cont saved-cont
@@ -133,12 +135,30 @@
 
         ; implement continuation for list-exp here.
         ; hint: you will need to call value-of/k recursively, by passing this continuation as cont to value-of/k.
-        (list-cont (cdr saved-env saved-cont)
-                   (if (null? cdr)
-                       (apply-cont saved-cont (cons val (emptylist-val)))
-                       (cons val (value-of/k (car cdr) saved-env
-                                   (list-cont (cdr cdr) saved-env (cons))))
+        (list-cont (saved-val saved-env saved-cont)
+                   (if (null? saved-val)
+                       (apply-cont saved-cont
+                                   (pair-val val (emptylist-val)))
+                                   ;(emptylist-val))
+                       ;(pair-val val (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env saved-cont)))
+                       (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env (list2-cont val saved-env saved-cont)))
+                       ;(cons (car val) (value-of/k (cdr val) saved-env
+                       ;            (list-cont saved-env saved-cont)))
                        ))
+
+        (list2-cont (saved-val saved-env saved-cont)
+                    (apply-cont saved-cont
+                                   (pair-val saved-val val)))     
+#|
+        (list2-cont (saved-val saved-env saved-cont)
+                    (apply-cont saved-cont
+                                   (pair-val saved-val val)))
+     
+        (list2-cont (saved-val saved-env saved-cont)
+                    (let ((pair1 (expval->num val1)) (pair2 (expval->num val)))
+                    (apply-cont saved-cont
+                                   (pair-val pair1 pair2))))
+|#
 
         ; implement map-exp continuation(s) here. you will notice that one continuation will not be enough.
         (map-cont (cdr saved-env saved-cont)

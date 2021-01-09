@@ -100,7 +100,7 @@ in let times4 = (fix t4m)
 
       (task5-emptylist
 "null?(emptylist)" #t)
-
+ #|
       (task5-emptylist2
 "null?(cdr(list(1)))" #t)
 
@@ -133,7 +133,7 @@ let fours = map(proc (v) -(v,1), fives) in car(fours)"
 let ans = map((subtracter 2), list(1, 2, 3)) in car(cdr(ans))"
         0)
       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      
+      |#
       ))
   
   )
