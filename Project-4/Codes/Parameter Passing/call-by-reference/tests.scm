@@ -34,8 +34,16 @@
 
       ;; - Call-by-reference and Call-by-need here
 
+      (cbr-vs-cbneed "let p = proc(x) 11
+                          in let f = proc(x) begin set x = 5; 12 end
+                              in let x = 3 in begin (p (f x)); x end" 5)
       
       ;; - Call-by-reference and Call-by-name here
+      (cbr-vs-cbname
+       "let or = proc(s1) if zero?(-(s1, 1)) then proc(s2) 1 else proc(s2) if zero?(-(s2, 1)) then 1 else 0
+            in let exp1 = 1
+                   in let exp2 = proc(x) begin set x = 0; 0 end
+                          in let x = 1 in begin ((or exp1) (exp2 x)); x end" 0)
 
       
       ;; ======================= PARAMETER PASSING - TASK 3 ========================

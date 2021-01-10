@@ -35,7 +35,17 @@
 
       ;; --- Call-by-reference and Call-by-need here
 
+      (cbr-vs-cbneed "let p = proc(x) 11
+                          in let f = proc(x) begin set x = 5; 12 end
+                              in let x = 3 in begin (p (f x)); x end" 3)
+
       ;; --- Call-by-value and Call-by-need here
+      (cbv-vs-cbneed
+       "let k = 0
+            in let p1 = proc(x) -(-(1,-1), k)
+                   in let p2 = proc(x) if zero?(x) then begin set x = 27; x end else x
+                          in begin set k = 6; (p1 (p2 k)) end" -4)
+      
 
       ;; ======================= PARAMETER PASSING - TASK 3 ========================
     )

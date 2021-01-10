@@ -34,8 +34,18 @@
       ;; Write the expression that evaluates different for:
 
       ;; --- Call-by-reference and Call-by-name here
-
+      (cbr-vs-cbname
+       "let or = proc(s1) if zero?(-(s1, 1)) then proc(s2) 1 else proc(s2) if zero?(-(s2, 1)) then 1 else 0
+            in let exp1 = 1
+                   in let exp2 = proc(x) begin set x = 0; 0 end
+                          in let x = 1 in begin ((or exp1) (exp2 x)); x end" 1)
+                 
       ;; --- Call-by-value and Call-by-name here
+      (cbv-vs-cbname
+       "let k = 3
+            in let p = proc(x) k
+                   in let f = proc(x) begin set x = 5; 12 end
+                          in begin set k = 1; (p (f k)) end" 1)
 
       ;; ======================= PARAMETER PASSING - TASK 3 ========================
     )
