@@ -6,11 +6,10 @@
   (lambda (n c)
     (if (<= n 2)
         (c 1)
-        (+
-         (fibo-cont (- n 1) (lambda (num) num))
-         (fibo-cont (- n 2) (lambda (num) num))
-         )
-        )))
+        (fibo-cont (- n 1)
+        (lambda (x1)
+          (fibo-cont (- n 2) (lambda (x2) (c (+ x1 x2)))))))))
+       
 
 (define fibonacci
   (lambda (n)
