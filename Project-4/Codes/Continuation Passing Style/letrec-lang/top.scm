@@ -67,7 +67,7 @@
   
   ;(display (run "cdr(cdr(list(1,2,3)))"))
   (display (run  "map(proc (v) -(v,1), list(5, 10, 2))"))
-  (display (run  "cdr(map(proc (v) -(v,1), list(5, 10, 2)))"))
+  ;(display (run  "cdr(map(proc (v) -(v,1), list(5, 10, 2)))"))
   
   ;(run "car(cdr(list(1,2,3)))")
   

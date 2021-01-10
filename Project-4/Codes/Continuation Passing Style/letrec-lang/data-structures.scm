@@ -138,7 +138,7 @@
       (saved-env environment?)
       (saved-cont continuation?))
     (map3-cont
-      (rand expression?)
+      (rand expval?)
       (saved-env environment?)
       (saved-cont continuation?))   
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
