@@ -121,7 +121,7 @@ in let times4 = (fix t4m)
        "let x = 3 in let arr = list(x, -(x,1)) in
     let y = if null?(arr) then 0 else car(cdr(arr)) in y"
        2)
-#|
+
        (task5-goodtest1
         "let makearr = proc (x) list(x, x, x, x) in
 let fives = (makearr 5) in
@@ -133,7 +133,7 @@ let fours = map(proc (v) -(v,1), fives) in car(fours)"
 let ans = map((subtracter 2), list(1, 2, 3)) in car(cdr(ans))"
         0)
       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      |#
+      
       ))
   
   )

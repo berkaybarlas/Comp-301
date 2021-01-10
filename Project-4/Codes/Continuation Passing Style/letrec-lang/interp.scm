@@ -151,66 +151,30 @@
                        (apply-cont saved-cont
                                    (emptylist-val))
                        (value-of/k listexp saved-env (map2-cont val saved-env saved-cont))
-
-                       ;(value-of/k listexp saved-env (map2-cont val saved-env (map3-cont listexp saved-env saved-cont)))
-                       ;(value-of/k listexp saved-env saved-cont)
-
-                       ;(value-of/k val saved-env (map-cont (cdr listexp) saved-env (map2-cont (car listexp) val saved-env saved-cont)))
                        ))
                    
         (map2-cont (procexp saved-env saved-cont)
                    (if (expval->null? val)
-                       (emptylist-val)
-                       (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)) )
-                         (pair-val (apply-procedure/k proc1 val1 saved-cont)
-                                   ;(apply-cont (map3-cont procexp saved-env saved-cont) (expval->cdr val) )
-                                   ;(apply-cont (map2-cont procexp saved-env saved-cont) (expval->cdr val) )
-                                  (value-of/k (expval->cdr val) saved-env (map2-cont procexp saved-env saved-cont))
-                               ;(expval->cdr val)
-                                   ))
+                           (emptylist-val)
+                       (apply-cont (map3-cont procexp val saved-env saved-cont) (expval->car val))
                        )
                    )
 
-        (map3-cont (saved-val saved-env saved-cont)
-                    (apply-cont saved-cont val))
-                   #|
+        (map3-cont (procexp saved-val saved-env saved-cont)
+                   (let ((val1 (expval->car saved-val)) (val2 (expval->cdr saved-val)) (proc1 (expval->proc procexp)) )
+                     (if (expval->null? val2)
+                         (apply-procedure/k proc1 val1 saved-cont)
+                         (apply-cont  (map3-cont procexp val2 saved-env (map4-cont val1 proc1 saved-env saved-cont)) val)
+                              )
+                    
+                   ))
+         (map4-cont (saved-val procval saved-env saved-cont)
+                    (apply-procedure/k procval saved-val (map5-cont val saved-env saved-cont)))
 
-        (map2-cont (procexp saved-env saved-cont)
-                   (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)))
-                    (apply-cont saved-cont (pair-val (apply-procedure/k proc1 val1 saved-cont) val)))
-                               )
+        (map5-cont (saved-val saved-env saved-cont)
+                    (apply-cont saved-cont
+                                   (pair-val val saved-val)))
 
-        (map2-cont (procexp saved-env saved-cont)
-                   (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)))
-                     (apply-cont saved-cont (apply-procedure/k proc1 val1 saved-cont))
-                               ))
-
-                   (if (expval->null? val)
-                       (num-val -23)
-                       (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)) )
-                         (pair-val (apply-procedure/k proc1 val1 saved-cont)
-                                   (apply-cont (map3-cont procexp saved-env saved-cont) (expval->cdr val) )
-                                  ;(value-of/k (expval->cdr val) saved-env (map3-cont procexp saved-env saved-cont))
-                               ;(expval->cdr val)
-                                   ))
-                       )
-                   )
-                     ;(apply-procedure/k proc1 val1 (map3-cont procexp saved-env saved-cont))))
-                   ; (value-of/k (expval->proc procexp) saved-env saved-cont))
-                                ;(rator-cont (car (expval->pair val)) saved-env saved-cont)))
-|#
-#|
-                    (apply-cont list-cont listexp
-                                (pair-val saved-val val)))
-        (value-of/k rator env
-            (rator-cont rand env cont))
-       (rator-cont (rand saved-env saved-cont)
-          (value-of/k rand saved-env
-            (rand-cont val saved-cont)))
-        (rand-cont (val1 saved-cont)
-          (let ((proc (expval->proc val1)))
-            (apply-procedure/k proc val saved-cont)))
-|#
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
         )))

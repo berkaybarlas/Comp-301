@@ -57,17 +57,19 @@
                 (run (cadr test))))
           (else (eopl:error 'run-one "no such test: ~s" test-name))))))
  
-  ;(run-all) ; runs all tests
+  (run-all) ; runs all tests
   ;(run "null?(emptylist)")
   ;(run "null?(list())")
   ;(run "null?(list(1))")
   ;(display (run "list(1,2,3)"))
   ;(display (run "car(list(1,2,3))"))
   ;(display (run "cdr(list(1,2,3))"))
+  ;(display (run "car(cdr(list(1,2,3)))"))
   
   ;(display (run "cdr(cdr(list(1,2,3)))"))
-  (display (run  "map(proc (v) -(v,1), list(5, 10, 2))"))
-  ;(display (run  "cdr(map(proc (v) -(v,1), list(5, 10, 2)))"))
+  ;(display (run  "map(proc (v) -(v,1), list(0))"))
+  ;(display (run  "map(proc (v) -(v,1), list(10, 2, 6, 4, 8))"))
+  ;(display (run  "cdr(map(proc (v) -(v,1), list(5, 10, 2, 4)))"))
   
   ;(run "car(cdr(list(1,2,3)))")
   

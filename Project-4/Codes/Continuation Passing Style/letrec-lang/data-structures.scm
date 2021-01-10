@@ -138,9 +138,19 @@
       (saved-env environment?)
       (saved-cont continuation?))
     (map3-cont
-      (rand expval?)
+      (proc expval?)
+      (list expval?)
       (saved-env environment?)
-      (saved-cont continuation?))   
+      (saved-cont continuation?))
+    (map4-cont
+      (list expval?)
+      (proc proc?)
+      (saved-env environment?)
+      (saved-cont continuation?))
+    (map5-cont
+      (list expval?)
+      (saved-env environment?)
+      (saved-cont continuation?))
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     )
