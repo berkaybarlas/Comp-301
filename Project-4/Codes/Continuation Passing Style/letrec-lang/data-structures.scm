@@ -53,7 +53,7 @@
   (define expval->pair
     (lambda (v)
       (cases expval v
-	(pair-val (car cdr) (car cdr))
+	(pair-val (car cdr) (list car cdr))
 	(else (expval-extractor-error 'car v)))))
   ;; implement expval->car
   (define expval->car
@@ -130,9 +130,17 @@
       (saved-cont continuation?))
     ; implement continuation datatype(s) for your map expression
     (map-cont
-      (cdr expression?)
+      (list expression?)
       (saved-env environment?)
-      (saved-cont continuation?))    
+      (saved-cont continuation?))
+    (map2-cont
+      (list expval?)
+      (saved-env environment?)
+      (saved-cont continuation?))
+    (map3-cont
+      (rand expression?)
+      (saved-env environment?)
+      (saved-cont continuation?))   
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     )

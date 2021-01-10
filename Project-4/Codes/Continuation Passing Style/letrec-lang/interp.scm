@@ -78,7 +78,7 @@
         ; Implement the map expression case here        
         (map-exp (exp1 exp2)
           (value-of/k exp1 env
-            (zero1-cont cont)))   
+            (map-cont exp2 env cont)))   
         ;;;;;;;;;;;;;;;;;;;;;;
    )))
 
@@ -121,13 +121,11 @@
         ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;;
         ; implement "car-cont" continuation here
         (car-cont (saved-cont)
-          (apply-cont saved-cont
-              (apply-cont saved-cont (expval->car val))))
+                  (apply-cont saved-cont (expval->car val)))
 
         ; implement "cdr-cont" continuation here
         (cdr-cont (saved-cont)
-          (apply-cont saved-cont
-              (apply-cont saved-cont (expval->cdr val))))
+          (apply-cont saved-cont (expval->cdr val)))
         ; implement "null?-cont" continuation here
         (null?-cont (saved-cont)
           (apply-cont saved-cont
@@ -139,34 +137,65 @@
         (list-cont (saved-val saved-env saved-cont)
                    (if (null? saved-val)
                        (apply-cont saved-cont
-                                   (pair-val val (num-val -5 )))
-                                   ;(emptylist-val))
-                       ;(pair-val val (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env saved-cont)))
+                                   (pair-val val (emptylist-val)))
                        (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env (list2-cont val saved-env saved-cont)))
                        ))
 
         (list2-cont (saved-val saved-env saved-cont)
-                    (let ((pair1 saved-val) (pair2  (value-of/k val saved-env saved-cont)))
-                    (apply-cont saved-cont
-                                   (pair-val pair1 pair2))))   
-#|
-        (list2-cont (saved-val saved-env saved-cont)
                     (apply-cont saved-cont
                                    (pair-val saved-val val)))
-     
-        (list2-cont (saved-val saved-env saved-cont)
-                    (let ((pair1 saved-val) (pair2 (expval->pair val)))
-                    (apply-cont saved-cont
-                                   (pair-val pair1 pair2))))  
-|#
 
         ; implement map-exp continuation(s) here. you will notice that one continuation will not be enough.
-        (map-cont (cdr saved-env saved-cont)
-                   (if (null? cdr)
-                       (apply-cont saved-cont (cons val (emptylist-val)))
-                       (cons val (value-of/k (car cdr) saved-env
-                                   (list-cont (cdr cdr) saved-env (cons))))
-                       ))        
+        (map-cont (listexp saved-env saved-cont)
+                   (if (null? listexp)
+                       (apply-cont saved-cont
+                                   (emptylist-val))
+                       (value-of/k listexp saved-env (map2-cont val saved-env (map3-cont listexp saved-env saved-cont)))
+                       ;(value-of/k listexp saved-env saved-cont)
+
+                       ;(value-of/k val saved-env (map-cont (cdr listexp) saved-env (map2-cont (car listexp) val saved-env saved-cont)))
+                       ))
+                   
+        (map2-cont (procexp saved-env saved-cont)
+                   (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)))
+                    (apply-cont saved-cont (pair-val (apply-procedure/k proc1 val1 saved-cont) val)))
+                               )
+
+        (map3-cont (saved-val saved-env saved-cont)
+                    (apply-cont saved-cont val))
+                   #|
+
+        (map2-cont (procexp saved-env saved-cont)
+                   (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)))
+                     (apply-cont saved-cont (apply-procedure/k proc1 val1 saved-cont))
+                               ))
+
+                   (if (expval->null? val)
+                       (num-val -23)
+                       (let ((val1 (expval->car val)) (proc1 (expval->proc procexp)) )
+                         (pair-val (apply-procedure/k proc1 val1 saved-cont)
+                                   (apply-cont (map3-cont procexp saved-env saved-cont) (expval->cdr val) )
+                                  ;(value-of/k (expval->cdr val) saved-env (map3-cont procexp saved-env saved-cont))
+                               ;(expval->cdr val)
+                                   ))
+                       )
+                   )
+                     ;(apply-procedure/k proc1 val1 (map3-cont procexp saved-env saved-cont))))
+                   ; (value-of/k (expval->proc procexp) saved-env saved-cont))
+                                ;(rator-cont (car (expval->pair val)) saved-env saved-cont)))
+|#
+#|
+                    (apply-cont list-cont listexp
+                                (pair-val saved-val val)))
+        (value-of/k rator env
+            (rator-cont rand env cont))
+       (rator-cont (rand saved-env saved-cont)
+          (value-of/k rand saved-env
+            (rand-cont val saved-cont)))
+        (rand-cont (val1 saved-cont)
+          (let ((proc (expval->proc val1)))
+            (apply-procedure/k proc val saved-cont)))
+|#
         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         
         )))

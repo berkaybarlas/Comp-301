@@ -100,7 +100,7 @@ in let times4 = (fix t4m)
 
       (task5-emptylist
 "null?(emptylist)" #t)
- #|
+
       (task5-emptylist2
 "null?(cdr(list(1)))" #t)
 
@@ -109,7 +109,7 @@ in let times4 = (fix t4m)
 
       (task5-cdr
 "car(cdr(list(2, 1)))" 1)
-
+ 
       (task5-carscdrs
 "car(cdr(car(car(cdr(list(2, list(list(4, 3), 1)))))))" 3)
 
@@ -121,7 +121,7 @@ in let times4 = (fix t4m)
        "let x = 3 in let arr = list(x, -(x,1)) in
     let y = if null?(arr) then 0 else car(cdr(arr)) in y"
        2)
-
+#|
        (task5-goodtest1
         "let makearr = proc (x) list(x, x, x, x) in
 let fives = (makearr 5) in
