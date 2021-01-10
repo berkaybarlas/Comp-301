@@ -50,6 +50,11 @@
 	variant value)))
 
   ;;;;;;;;;;;;;;;;;;;;;;; TASK 5 ;;;;;;;;;;;;;;;;;;;;;;;
+  (define expval->pair
+    (lambda (v)
+      (cases expval v
+	(pair-val (car cdr) (car cdr))
+	(else (expval-extractor-error 'car v)))))
   ;; implement expval->car
   (define expval->car
     (lambda (v)

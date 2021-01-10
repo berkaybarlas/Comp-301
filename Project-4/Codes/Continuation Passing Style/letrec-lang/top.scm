@@ -61,11 +61,11 @@
   (run "null?(emptylist)")
   (run "null?(list())")
   ;(run "null?(list(1))")
-  (run "list(1,2,3)")
-  ;(run "car(list(1,2,3))")
-  ;(run "cdr(list(1,2,3))")
+  (display (run "list(1,2,3)"))
+  (display (run "car(list(1,2,3))"))
+  (display (run "cdr(list(1,2,3))"))
   
-  ;(run "cdr(cdr(list(1,2,3)))")
+  (display (run "cdr(cdr(list(1,2,3)))"))
   ;(run "car(cdr(list(1,2,3)))")
   
   )

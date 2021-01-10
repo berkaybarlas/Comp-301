@@ -52,6 +52,7 @@
 
 
         ;;;; TASK 4 ;;;;;;;;;
+        ; ?? pair exp
         ; Implement car expression case here
         (car-exp (exp1) 
           (value-of/k exp1 env
@@ -138,26 +139,25 @@
         (list-cont (saved-val saved-env saved-cont)
                    (if (null? saved-val)
                        (apply-cont saved-cont
-                                   (pair-val val (emptylist-val)))
+                                   (pair-val val (num-val -5 )))
                                    ;(emptylist-val))
                        ;(pair-val val (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env saved-cont)))
                        (value-of/k (car saved-val) saved-env (list-cont (cdr saved-val) saved-env (list2-cont val saved-env saved-cont)))
-                       ;(cons (car val) (value-of/k (cdr val) saved-env
-                       ;            (list-cont saved-env saved-cont)))
                        ))
 
         (list2-cont (saved-val saved-env saved-cont)
+                    (let ((pair1 saved-val) (pair2  (value-of/k val saved-env saved-cont)))
                     (apply-cont saved-cont
-                                   (pair-val saved-val val)))     
+                                   (pair-val pair1 pair2))))   
 #|
         (list2-cont (saved-val saved-env saved-cont)
                     (apply-cont saved-cont
                                    (pair-val saved-val val)))
      
         (list2-cont (saved-val saved-env saved-cont)
-                    (let ((pair1 (expval->num val1)) (pair2 (expval->num val)))
+                    (let ((pair1 saved-val) (pair2 (expval->pair val)))
                     (apply-cont saved-cont
-                                   (pair-val pair1 pair2))))
+                                   (pair-val pair1 pair2))))  
 |#
 
         ; implement map-exp continuation(s) here. you will notice that one continuation will not be enough.
